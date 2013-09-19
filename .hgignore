@@ -1,0 +1,23 @@
+syntax: glob
+
+# for Gradle
+.gradle/
+build/
+
+# for Eclipse
+.project
+.classpath
+.settings/
+bin/
+
+# for IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# Other
+*.bak
+*~
+.DS_Store
