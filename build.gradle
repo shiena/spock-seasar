@@ -1,0 +1,130 @@
+apply plugin: 'groovy'
+apply plugin: 'maven'
+
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+
+group = 'org.shiena'
+version = '0.0.1'
+
+buildscript {
+    repositories {
+        maven { url 'http://repo.springsource.org/plugins-release' }
+    }
+    dependencies {
+        classpath 'org.springframework.build.gradle:propdeps-plugin:0.0.4'
+    }
+}
+
+configure(allprojects) {
+    apply plugin: 'propdeps'
+    apply plugin: 'propdeps-maven'
+    apply plugin: 'propdeps-idea'
+    apply plugin: 'propdeps-eclipse'
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "file:${projectDir}/../mvn-repo")
+        }
+    }
+}
+
+[install.repositories.mavenInstaller, uploadArchives.repositories.mavenDeployer]*.pom*.whenConfigured { pom ->
+    pom.project {
+        description 'Spock Framework - Seasar2 Module'
+        url 'https://bitbucket.org/shiena/spock-seasar'
+        inceptionYear '2013'
+        packaging 'jar'
+        licenses {
+            license {
+                name 'The Apache Software License, Version 2.0'
+                url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                distribution 'repo'
+            }
+        }
+        developers {
+            developer {
+                id 'shiena'
+                name 'Mitsuhiro Koga'
+                email 'shiena.jp_at_gmail.com'
+                timezone 'Asia/Tokyo'
+            }
+        }
+        scm {
+            connection 'scm:hg:https://bitbucket.org/shiena/spock-seasar'
+            tag '0.0.1'
+            url 'https://bitbucket.org/shiena/spock-seasar'
+        }
+    }
+}
+
+def defaultEncoding = 'UTF-8'
+[compileJava, compileTestJava, javadoc]*.options*.encoding = defaultEncoding
+
+def jdkVersion = '1.5'
+sourceCompatibility = jdkVersion
+
+task sourceJar(type: Jar, dependsOn:classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives sourceJar
+}
+
+javadoc {
+    options.charSet = defaultEncoding
+}
+
+idea {
+    pathVariables 'GRADLE_USER_HOME': gradle.gradleUserHomeDir
+    project {
+        languageLevel = jdkVersion
+    }
+}
+
+eclipse {
+    pathVariables 'GRADLE_USER_HOME': gradle.gradleUserHomeDir
+    classpath {
+        containers = [
+            'org.eclipse.jdt.launching.JRE_CONTAINER',
+        ]
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        name 'The Seasar Foundation Maven2 Repository'
+        url 'http://maven.seasar.org/maven2'
+    }
+}
+
+def seasarVersion = "2.4.46"
+
+dependencies {
+    compile 'org.spockframework:spock-core:0.7-groovy-2.0'
+
+    compile ("org.seasar.container:s2-framework:${seasarVersion}") {
+        exclude module: 'junit'
+    }
+    compile ("org.seasar.container:s2-extension:${seasarVersion}") {
+        exclude module: 'junit'
+    }
+    compile ("org.seasar.container:s2-tiger:${seasarVersion}") {
+        exclude module: 'junit'
+    }
+
+    provided 'org.apache.geronimo.specs:geronimo-servlet_2.4_spec:1.0'
+    provided 'org.apache.geronimo.specs:geronimo-ejb_3.0_spec:1.0'
+    provided 'org.apache.geronimo.specs:geronimo-jpa_3.0_spec:1.0'
+    provided 'org.apache.geronimo.specs:geronimo-jta_1.1_spec:1.0'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.7'
+}
+
