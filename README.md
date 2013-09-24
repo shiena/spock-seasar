@@ -74,7 +74,7 @@ To use with maven, you may add the following snippet to your `pom.xml`
 </dependencies>
 ```
 
-## Additional feature
+## Additional features
 
 ### `org.shiena.seasar.S2SpockInternalTestContextImpl`
 
@@ -90,15 +90,23 @@ This is a `TestContext` that inherits `SimpleInternalTestContext`.
 * `getFeatureName()` - Return the String name of the test method
 * `getIterationName()` - Return the String name of the unrolled test method
 
-## Unsupported feature
+## Unsupported features
 
 * [Naming conventions for method](http://s2container.seasar.org/2.4/ja/S2JUnit4.html#methodNamingConvention)
+* [`@Prerequisite` annotation](http://s2container.seasar.org/2.4/ja/S2JUnit4.html#prerequisiteAnnotation)
 * [`@Mock` annotation](http://s2container.seasar.org/2.4/ja/S2JUnit4.html#mockAnnotation)
 * [`@Mocks` annotation](http://s2container.seasar.org/2.4/ja/S2JUnit4.html#mocksAnnotation)
 * [`@EasyMock` annotation](http://s2container.seasar.org/2.4/ja/S2JUnit4.html#easyMockAnnotation)
 * [`@PostBindFields` annotation](http://s2container.seasar.org/2.4/ja/S2JUnit4.html#postBindFieldsAnnotation)
 * [`@PreUnbindFields` annotation](http://s2container.seasar.org/2.4/ja/S2JUnit4.html#preUnbindFieldsAnnotation)
 * [Customizing the behavior using `s2junit4config.dicon`](http://s2container.seasar.org/2.4/ja/S2JUnit4.html#customization)
+
+## Attention
+
+Can not be used together Spock and S2JUnit4 because it requires JUnit of different versions.
+
+* Spock requires JUnit 4.7 or higher.
+* S2JUnit4 requires JUnit 4.4.
 
 ## License
 
